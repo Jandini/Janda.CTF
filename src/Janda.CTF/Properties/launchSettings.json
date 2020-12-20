@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Add": {
+      "commandName": "Project",
+      "commandLineArgs": "add --name C001"
+    },
+    "Help": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
+    }
+  }
+}

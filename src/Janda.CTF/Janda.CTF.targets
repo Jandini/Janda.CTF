@@ -1,0 +1,19 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <Target Name="DefaultAppSettings" BeforeTargets="CollectPackageReferences;Restore" Condition= " !Exists('$(ProjectDir)appsettings.json') " >
+    <ItemGroup>
+      <ProjectFilesToCopy Include="$(MSBuildThisFileDirectory)appsettings.json" />
+    </ItemGroup>    
+    <Message Importance="high" Text="Adding default @(FilesToCopy) to $(ProjectDir)" />
+    <Copy SourceFiles="@(ProjectFilesToCopy)" DestinationFolder="$(ProjectDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="You must set %22Copy to Output Directory%22 property for appsettings.json" />
+    <MakeDir Directories="$(ProjectDir)/Challenges" />
+  </Target>
+
+  <Target Name="DefaultLaunchSettings" BeforeTargets="CollectPackageReferences;Restore" Condition= " !Exists('$(ProjectDir)/Properties/launchSettings.json') " >
+    <ItemGroup>
+      <PropertiesFilesToCopy Include="$(MSBuildThisFileDirectory)launchSettings.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PropertiesFilesToCopy)" DestinationFolder="$(ProjectDir)/Properties" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
