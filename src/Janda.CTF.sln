@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Janda.CTF", "Janda.CTF\Janda.CTF.csproj", "{74F46016-7036-4965-A878-AF726E7C14B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Janda.CTF.Demo", "Janda.CTF.Demo\Janda.CTF.Demo.csproj", "{F9E23B2F-2F87-4513-B35B-354702D23F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Janda.CTF.QuickStart", "Janda.CTF.QuickStart\Janda.CTF.QuickStart.csproj", "{F9E23B2F-2F87-4513-B35B-354702D23F97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
