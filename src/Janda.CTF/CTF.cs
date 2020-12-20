@@ -15,7 +15,7 @@ namespace Janda.CTF
         {
             const string TITLE = "CTF Workbench";
 
-            var version = Assembly.GetEntryAssembly()
+            var version = Assembly.GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                 .InformationalVersion;
 
