@@ -13,16 +13,12 @@ namespace Janda.CTF
 {
     public class CTF
     {
-        const string TITLE = "CTF runner";
-        const string LOG_DIR = "Logs";
-        const string LOG_FILE_EXTENSION = "log";
-
         public static void Run(string[] args, Action<IServiceCollection> services = null)
         {
             var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-            var ctf = Assembly.GetEntryAssembly().EntryPoint.GetCustomAttribute<CTFAttribute>();
+            var ctf = Assembly.GetEntryAssembly().EntryPoint.GetCustomAttribute<CTFAttribute>() ?? new CTFAttribute();
 
-            var title = $"{TITLE} {version}";
+            var title = $"CTF runner {version}";
             Console.Title = title;
 
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
@@ -65,10 +61,10 @@ namespace Janda.CTF
 
                     loggerConfiguration.WriteTo.File(
                         path: Path.Combine(
-                            LOG_DIR, 
+                            ctf.LogDirectory ?? string.Empty, 
                             Assembly.GetEntryAssembly().GetName().Name, 
                             name, 
-                            Path.ChangeExtension($"{name}-{DateTime.Now:yyyyMMddHHmmss}", LOG_FILE_EXTENSION)));
+                            Path.ChangeExtension($"{name}-{DateTime.Now:yyyyMMddHHmmss}", ctf.LogFileExtension ?? "log")));
 
                     logging.AddSerilog(
                         loggerConfiguration.CreateLogger(),
@@ -79,8 +75,12 @@ namespace Janda.CTF
                 .WithServices(services)
                 .Run((provider) =>
                 {
-                    provider.GetRequiredService<ILogger<CTF>>()
-                        .LogTrace("Started {title}", !string.IsNullOrEmpty(ctf?.Name) ? ctf.Name : title);
+                    var logger = provider.GetRequiredService<ILogger<CTF>>();
+
+                    if (!string.IsNullOrEmpty(ctf.Name))
+                        logger.LogTrace("Started {name}", ctf.Name);
+
+                    logger.LogTrace("Using {title}", title);
 
                     switch (ChallengeRunner.Options)
                     {
