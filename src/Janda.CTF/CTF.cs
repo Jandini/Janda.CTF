@@ -62,7 +62,11 @@ namespace Janda.CTF
                     var name = options?.Name ?? "CTF";
 
                     loggerConfiguration.WriteTo.File(
-                        path: Path.Combine(LOG_DIR, name, Path.ChangeExtension($"{name}-{DateTime.Now:yyyyMMddHHmmss}", LOG_FILE_EXTENSION)));
+                        path: Path.Combine(
+                            LOG_DIR, 
+                            Assembly.GetEntryAssembly().GetName().Name, 
+                            name, 
+                            Path.ChangeExtension($"{name}-{DateTime.Now:yyyyMMddHHmmss}", LOG_FILE_EXTENSION)));
 
                     logging.AddSerilog(
                         loggerConfiguration.CreateLogger(),
