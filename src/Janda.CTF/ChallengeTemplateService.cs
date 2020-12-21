@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Janda.CTF
 {
@@ -11,7 +12,7 @@ namespace Janda.CTF
     {
         private readonly ILogger<ChallengeTemplateService> _logger;
         private readonly IChallengeProjectService _project;
-        private readonly IChallengeLaunchSettingsService _launchSettings;
+        private readonly IChallengeLaunchSettingsService _launchSettings;        
 
         public ChallengeTemplateService(ILogger<ChallengeTemplateService> logger, IChallengeProjectService project, IChallengeLaunchSettingsService launchSettings)
         {
@@ -42,10 +43,10 @@ namespace Janda.CTF
             var path = Path.Combine(root, Path.ChangeExtension(name, "cs"));
 
             if (!File.Exists(path))
-            {
+            {            
                 var contents = LoadTemplate(options);
 
-                ReplacePlaceholder(ref contents, "namespace", typeof(ChallengeTemplateService).Namespace);
+                ReplacePlaceholder(ref contents, "namespace", Assembly.GetEntryAssembly().EntryPoint?.DeclaringType.Namespace ?? typeof(ChallengeTemplateService).Namespace);
                 ReplacePlaceholder(ref contents, "name", name);
 
                 foreach (var property in options.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(OptionAttribute))))
