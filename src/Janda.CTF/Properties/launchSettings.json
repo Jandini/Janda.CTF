@@ -4,6 +4,10 @@
       "commandName": "Project",
       "commandLineArgs": "add --name C001"
     },
+    "Play": {
+      "commandName": "Project",
+      "commandLineArgs": "play"
+    },
     "Help": {
       "commandName": "Project",
       "commandLineArgs": "--help"

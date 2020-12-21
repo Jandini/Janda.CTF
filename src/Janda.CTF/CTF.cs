@@ -40,6 +40,8 @@ namespace Janda.CTF
                         h.Heading = title;
                         h.AdditionalNewLineAfterOption = false;                        
                         h.Copyright = string.Empty;
+                        h.AddDashesToOption = true;
+
                         return HelpText.DefaultParsingErrorsHandler(result, h);
                     }, e => e, true));
                 })
@@ -77,16 +79,16 @@ namespace Janda.CTF
                 .WithServices(services)
                 .Run((provider) =>
                 {
-                    var logger = provider.GetRequiredService<ILogger<CTF>>();
-
-                    if (!string.IsNullOrEmpty(ctf?.Name))
-                        logger.LogTrace("Started {ctf} with {title}", ctf.Name, title);
-                    else
-                        logger.LogTrace("Started {title}", title);
+                    provider.GetRequiredService<ILogger<CTF>>()
+                        .LogTrace("Started {title}", !string.IsNullOrEmpty(ctf?.Name) ? ctf.Name : title);
 
                     switch (ChallengeRunner.Options)
                     {
                         case IChallengeOptions options:
+                            provider.GetRequiredService<IChallengeRunnerService>().Run(options);
+                            break;
+
+                        case IChallengePlayOptions options:
                             provider.GetRequiredService<IChallengeRunnerService>().Run(options);
                             break;
 

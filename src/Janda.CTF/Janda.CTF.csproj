@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Matt Janda</Authors>
     <Owners>Matt Janda</Owners>
-    <Description>Provides Capture The Flag console application runner.</Description>
+    <Description>Provides Capture The Flag challenge runner.</Description>
     <PackageId>Janda.CTF</PackageId>
     <PackageIcon>CTF.ico</PackageIcon>
     <Copyright />
