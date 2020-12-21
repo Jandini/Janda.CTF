@@ -19,9 +19,8 @@ namespace Janda.CTF
 
         public static void Run(string[] args, Action<IServiceCollection> services = null)
         {
-            var version = Assembly.GetExecutingAssembly()
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                .InformationalVersion;
+            var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+            var ctf = Assembly.GetEntryAssembly().EntryPoint.GetCustomAttribute<CTFAttribute>();
 
             var title = $"{TITLE} {version}";
             Console.Title = title;
@@ -39,7 +38,7 @@ namespace Janda.CTF
                     Console.WriteLine(HelpText.AutoBuild(result, h =>
                     {
                         h.Heading = title;
-                        h.AdditionalNewLineAfterOption = false;
+                        h.AdditionalNewLineAfterOption = false;                        
                         h.Copyright = string.Empty;
                         return HelpText.DefaultParsingErrorsHandler(result, h);
                     }, e => e, true));
@@ -74,7 +73,12 @@ namespace Janda.CTF
                 .WithServices(services)
                 .Run((provider) =>
                 {
-                    provider.GetRequiredService<ILogger<CTF>>().LogTrace("Using {Title} {Version}", TITLE, version);
+                    var logger = provider.GetRequiredService<ILogger<CTF>>();
+
+                    if (!string.IsNullOrEmpty(ctf?.Name))
+                        logger.LogTrace("Started {ctf} with {title}", ctf.Name, title);
+                    else
+                        logger.LogTrace("Started {title}", title);
 
                     switch (ChallengeRunner.Options)
                     {
