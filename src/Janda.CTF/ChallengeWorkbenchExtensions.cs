@@ -12,12 +12,10 @@ namespace Janda.CTF
         public static ChallengeWorkbench WithServices(this ChallengeWorkbench workbench, Action<IServiceCollection> services) => workbench.AddServices(services);
         public static ChallengeWorkbench WithLogging(this ChallengeWorkbench workbench, Action<ILoggingBuilder> logging) => workbench.AddLogging(logging);
         public static ChallengeWorkbench WithParser(this ChallengeWorkbench workbench, Parser parser) => workbench.SetParser(parser);
-        public static ChallengeWorkbench WithUnparsedOptions(this ChallengeWorkbench workbench, string[] args) => workbench.SetUnparsedOptions(args);
-        public static ChallengeWorkbench WithUnparsedAction(this ChallengeWorkbench workbench, Action unparsed) => workbench.SetUnparsedAction(unparsed);
         public static ChallengeWorkbench ParseOptions<T>(this ChallengeWorkbench workbench, string[] args) => workbench.ParseOptions<T>(args);
-        public static ChallengeWorkbench ParseVerbs(this ChallengeWorkbench workbench, string[] args, Type[] verbs) => workbench.ParseVerbs(args, verbs);
+        public static ChallengeWorkbench ParseVerbs(this ChallengeWorkbench workbench, string[] args, Type[] verbs, Action<ParserResult<object>> unparsed = null) => workbench.ParseVerbs(args, verbs, unparsed);
         public static ChallengeWorkbench ParseOptions<T>(this ChallengeWorkbench workbench, string[] args, out T options) => workbench.ParseOptions(args, out options);
-        public static ChallengeWorkbench ParseVerbs(this ChallengeWorkbench workbench, string[] args) => workbench.ParseVerbs(args);
+        public static ChallengeWorkbench ParseVerbs(this ChallengeWorkbench workbench, string[] args, Action<ParserResult<object>> unparsed = null) => workbench.ParseVerbs(args, unparsed);
         public static IServiceProvider Build(this ChallengeWorkbench workbench) => workbench.Build();
      
     }

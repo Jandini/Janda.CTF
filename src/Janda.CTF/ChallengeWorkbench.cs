@@ -17,7 +17,6 @@ namespace Janda.CTF
         public static object Options { get; internal set; }
 
         private Parser _parser;
-        private Action _unparsed;
         private readonly ServiceCollection _services;
         private Func<IConfiguration> _configuration;
         private Action<ILoggingBuilder> _logging;
@@ -30,7 +29,6 @@ namespace Janda.CTF
 
             _configuration = DefaultConfiguration;
             _logging = DefaultLogging;
-            _unparsed = DefaultExit;
         }
 
         public static void Run<TService, TImplementation>(string[] args, Action<TService> run, Action<IServiceCollection> services = null)
@@ -167,11 +165,6 @@ namespace Janda.CTF
                 : default;
         }
 
-        private void DefaultExit()
-        {
-            Environment.Exit(1);
-        }
-
 
         private IConfiguration DefaultConfiguration()
         {          
@@ -191,7 +184,7 @@ namespace Janda.CTF
         }
 
 
-        private static Type[] LoadVerbs()
+        internal static Type[] LoadVerbs()
         {                                               
             var verbs = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !IsSystemAssembly(a))
@@ -261,18 +254,15 @@ namespace Janda.CTF
             return this;
         }
 
-        internal ChallengeWorkbench SetUnparsedAction(Action unparsed)
-        {
-            _unparsed = unparsed;
-            return this;
-        }
 
-        internal ChallengeWorkbench ParseOptions<T>(string[] args)
+        internal ChallengeWorkbench ParseOptions<T>(string[] args, Action<ParserResult<T>> unparsed = null) 
         {
             T parsed = default;
 
-            _parser.ParseArguments<T>(args)
-                .WithNotParsed((e) => _unparsed.Invoke()) 
+            var result = _parser.ParseArguments<T>(args);
+
+            result
+                .WithNotParsed((e) => { unparsed?.Invoke(result); Environment.Exit(1); }) 
                 .WithParsed((o) => { parsed = o; });
 
             Options = parsed;
@@ -280,12 +270,14 @@ namespace Janda.CTF
             return this;
         }
 
-        internal ChallengeWorkbench ParseVerbs(string[] args, Type[] verbs)
+        internal ChallengeWorkbench ParseVerbs(string[] args, Type[] verbs, Action<ParserResult<object>> unparsed = null)
         {
             object parsed = default;
 
-            _parser.ParseArguments(args, verbs)
-                .WithNotParsed((e) => _unparsed.Invoke())
+            var parserResult = _parser.ParseArguments(args, verbs);
+
+            parserResult
+                .WithNotParsed((e) => { unparsed.Invoke(parserResult); Environment.Exit(1); })
                 .WithParsed((o) => { parsed = o; });
 
             Options = parsed;
@@ -293,16 +285,16 @@ namespace Janda.CTF
             return this;
         }
 
-        internal ChallengeWorkbench ParseOptions<T>(string[] args, out T options)
+        internal ChallengeWorkbench ParseOptions<T>(string[] args, out T options, Action<ParserResult<T>> unparsed = null)
         {
-            ParseOptions<T>(args);
+            ParseOptions<T>(args, unparsed);
             options = (T)Options;
             return this;
         }
 
-        internal ChallengeWorkbench ParseVerbs(string[] args)
+        internal ChallengeWorkbench ParseVerbs(string[] args, Action<ParserResult<object>> unparsed = null)
         {
-            ParseVerbs(args, LoadVerbs());
+            ParseVerbs(args, LoadVerbs(), unparsed);
             return this;
         }
     }
