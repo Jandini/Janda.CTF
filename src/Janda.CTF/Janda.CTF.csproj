@@ -58,7 +58,11 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
 
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="GitVersionTask" Version="5.3.3" />
+
+    <PackageReference Include="GitVersionTask" Version="5.3.3" >
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
 
     <PackageReference Include="Janda.Dot.Nuget" Version="0.3.0">
       <PrivateAssets>all</PrivateAssets>
