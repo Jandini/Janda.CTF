@@ -14,7 +14,7 @@
         /// Run multipe challenges
         /// </summary>
         /// <returns></returns>
-        void Run(IChallengeRunOptions options);
+        void Run(IChallengePlayOptions options);
 
     }
 }

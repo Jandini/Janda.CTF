@@ -1,6 +1,6 @@
 namespace Janda.CTF
 {
-    interface IChallengeRunOptions
+    interface IChallengePlayOptions
     {
         
     }

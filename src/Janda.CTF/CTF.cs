@@ -13,37 +13,37 @@ namespace Janda.CTF
 {
     public class CTF
     {
-        const string TITLE = "CTF workbench";
+        const string TITLE = "CTF runner";
+        const string LOG_DIR = "Logs";
+        const string LOG_FILE_EXTENSION = "log";
 
         public static void Run(string[] args, Action<IServiceCollection> services = null)
         {
-
             var version = Assembly.GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                 .InformationalVersion;
 
             var title = $"{TITLE} {version}";
-
             Console.Title = title;
 
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
                 Assembly.LoadFrom(assemblyFile);
 
-            new ChallengeWorkbench()
+            new ChallengeRunner()
                  .WithParser(new Parser((settings) =>
                  {
                      settings.HelpWriter = null;
-                 }))                 
+                 }))
                 .ParseVerbs(args, (result) =>
                 {
-                    Console.WriteLine(HelpText.AutoBuild(result, h => {
+                    Console.WriteLine(HelpText.AutoBuild(result, h =>
+                    {
                         h.Heading = title;
+                        h.AdditionalNewLineAfterOption = false;
                         h.Copyright = string.Empty;
                         return HelpText.DefaultParsingErrorsHandler(result, h);
-                    }, e => e));
-                })               
-                .WithServices((services) => services.AddChallengeServices())
-                .WithServices(services)
+                    }, e => e, true));
+                })
                 .WithConfiguration(() =>
                 {
                     using var stream = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), typeof(CTF).Namespace)
@@ -56,13 +56,10 @@ namespace Janda.CTF
                 })
                 .WithLogging((logging) =>
                 {
-                    const string LOG_DIR = "Logs";
-                    const string LOG_FILE_EXTENSION = "log";
-
                     var loggerConfiguration = new LoggerConfiguration()
-                        .ReadFrom.Configuration(ChallengeWorkbench.Configuration);
+                        .ReadFrom.Configuration(ChallengeRunner.Configuration);
 
-                    var options = ChallengeWorkbench.Options as IChallengeOptions;
+                    var options = ChallengeRunner.Options as IChallengeOptions;
                     var name = options?.Name ?? "CTF";
 
                     loggerConfiguration.WriteTo.File(
@@ -73,11 +70,13 @@ namespace Janda.CTF
                         dispose: true);
 
                 })
+                .WithServices((services) => services.AddChallengeServices())
+                .WithServices(services)
                 .Run((provider) =>
                 {
-                    provider.GetRequiredService<ILogger<CTF>>().LogTrace("Running {Title} {Version}", TITLE, version);
+                    provider.GetRequiredService<ILogger<CTF>>().LogTrace("Using {Title} {Version}", TITLE, version);
 
-                    switch (ChallengeWorkbench.Options)
+                    switch (ChallengeRunner.Options)
                     {
                         case IChallengeOptions options:
                             provider.GetRequiredService<IChallengeRunnerService>().Run(options);
@@ -91,6 +90,6 @@ namespace Janda.CTF
                             throw new NotImplementedException();
                     };
                 });
-        }   
+        }
     }
 }

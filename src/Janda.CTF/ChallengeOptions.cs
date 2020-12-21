@@ -2,7 +2,7 @@
 
 namespace Janda.CTF
 {
-    [Verb("work", isDefault: true, HelpText = "Run challenge.")]
+    [Verb("run", isDefault: true, HelpText = "Run challenge.")]
     public class ChallengeOptions : IChallengeOptions
     {
         [Option("name", Required = true)]

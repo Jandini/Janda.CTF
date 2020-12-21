@@ -13,7 +13,7 @@ namespace Janda.CTF
             _factory = factory;            
         }
 
-        public void Run(IChallengeRunOptions options)
+        public void Run(IChallengePlayOptions options)
         {
             var challenges = _factory.GetChallenges();            
             _logger.LogInformation("Running {@challenges}", string.Join(", ", challenges));

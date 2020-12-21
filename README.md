@@ -1,6 +1,6 @@
 # Janda.CTF
 
-**Capture The Flag workbench** is a console application wrapper. The workbench allows to create, run and work on CTF challenges as independent services. The challenge service is represented by a class with `IChallenge` implementation. 
+**Capture The Flag** is a console application challenge runner. 
 
 
 
@@ -28,7 +28,7 @@ namespace QuickStart
 4. Run program with `Add` profile to create `C001` challenge
 ###### launchSettings.json 
 
-*CTF workbench nuget package provides default profiles* 
+*CTF nuget package provides Help and Add profiles* 
 
 ```JSON
 {
@@ -49,7 +49,7 @@ namespace QuickStart
 
 ###### C001.cs
 
-*The challenge class was added by CTF workbench*.
+*The challenge class was added by CTF challenge runner*.
 
 ```C#
 using Microsoft.Extensions.Logging;
@@ -76,7 +76,7 @@ namespace Janda.CTF
 6. Run the challenge with `C001` profile
 ###### launchSettings.json
 
-*C001 profile was added by CTF workbench*
+*C001 profile was added by CTF runner*
 
 ```JSON
 {
@@ -98,7 +98,7 @@ namespace Janda.CTF
 ```
 ###### Output
 ```
-[22:24:33 VRB] Running CTF workbench 1.0.0
+[22:24:33 VRB] Using CTF runner 1.0.0
 [22:24:33 VRB] Running challange C001
 [22:24:33 INF] I will get the flag!
 [22:24:33 VRB] Challenge C001 completed
@@ -141,7 +141,7 @@ namespace QuickStart
 }
 ```
 
-8. Add your service to CTF workbench
+8. Add your service to CTF runner
 ###### Program.cs
 ```C#
 using Janda.CTF;
@@ -191,7 +191,7 @@ namespace Janda.CTF
 10. Run `C001` challenge with `IFlagFinder` service
 ###### Output
 ```
-[23:01:20 VRB] Running CTF Workbench 1.0.0
+[23:01:20 VRB] Using CTF runner 1.0.0
 [23:01:20 VRB] Running challange C001
 [23:01:20 INF] I will capture the flag!
 [23:01:20 INF] Looking for a flag...

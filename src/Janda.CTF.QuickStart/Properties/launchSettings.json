@@ -2,7 +2,7 @@
   "profiles": {
     "Help": {
       "commandName": "Project",
-      "commandLineArgs": "add --help"
+      "commandLineArgs": "--help"
     }, 
     "Add": {
       "commandName": "Project",

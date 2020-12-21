@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Janda.CTF
 {
-    public sealed class ChallengeWorkbench
+    public sealed class ChallengeRunner
     {
         public static IServiceProvider Services { get; private set; }
         public static IConfiguration Configuration { get; private set; }
@@ -22,7 +22,7 @@ namespace Janda.CTF
         private Action<ILoggingBuilder> _logging;
 
 
-        public ChallengeWorkbench()
+        public ChallengeRunner()
         {        
             _services = new ServiceCollection();
             _parser = Parser.Default;
@@ -33,7 +33,7 @@ namespace Janda.CTF
 
         public static void Run<TService, TImplementation>(string[] args, Action<TService> run, Action<IServiceCollection> services = null)
             where TService : class
-            where TImplementation : class, TService => new ChallengeWorkbench()
+            where TImplementation : class, TService => new ChallengeRunner()
                 .SetUnparsedOptions(args)
                 .AddServices(services)
                 .Run<TService, TImplementation>(run);
@@ -41,26 +41,24 @@ namespace Janda.CTF
         
         public static int Run<TService, TImplementation, TOptions>(string[] args, Func<TService, int> run, Action<IServiceCollection> services = null)
             where TService : class
-            where TImplementation : class, TService => new ChallengeWorkbench()
+            where TImplementation : class, TService => new ChallengeRunner()
                 .ParseOptions<TOptions>(args)
                 .WithServices(services)
                 .Run<TService, TImplementation>(run);
 
         public static void Run<TService, TImplementation, TOptions>(string[] args, Action<TService> run, Action<IServiceCollection> services = null)
             where TService : class
-            where TImplementation : class, TService => new ChallengeWorkbench()
+            where TImplementation : class, TService => new ChallengeRunner()
                 .ParseOptions<TOptions>(args)
                 .WithServices(services)
                 .Run<TService, TImplementation>(run);
-
-
 
 
         public static TService RunService<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
         {
-            return new ChallengeWorkbench()
+            return new ChallengeRunner()
                 .AddServices((services) => { services.AddTransient<TService, TImplementation>(); })
                 .Build()
                 .GetRequiredService<TService>();
@@ -69,7 +67,7 @@ namespace Janda.CTF
 
         public static void RunVerbs<TService, TImplementation>(string[] args, Action<TService> run, Action<IServiceCollection> services = null)
             where TService : class
-            where TImplementation : class, TService => new ChallengeWorkbench()
+            where TImplementation : class, TService => new ChallengeRunner()
                 .ParseVerbs(args)
                 .AddServices(services)
                 .Run<TService, TImplementation>((service) => { run?.Invoke(service); return 0; });
@@ -77,7 +75,7 @@ namespace Janda.CTF
 
         public static int RunVerbs<TService, TImplementation>(string[] args, Func<TService, int> run, Action<IServiceCollection> services = null)
             where TService : class
-            where TImplementation : class, TService => new ChallengeWorkbench()
+            where TImplementation : class, TService => new ChallengeRunner()
                 .ParseVerbs(args)
                 .AddServices((services) => services.AddTransient<TService, TImplementation>())
                 .WithServices(services)
@@ -87,7 +85,7 @@ namespace Janda.CTF
 
         public static TService RunVerbs<TService, TImplementation>(string[] args, Action<IServiceCollection> services = null)
             where TService : class
-            where TImplementation : class, TService => new ChallengeWorkbench()
+            where TImplementation : class, TService => new ChallengeRunner()
                 .ParseVerbs(args)
                 .AddServices((services) => { services.AddTransient<TService, TImplementation>(); })
                 .AddServices(services)
@@ -95,7 +93,7 @@ namespace Janda.CTF
                 .GetRequiredService<TService>();
 
 
-        public static int RunVerbs(string[] args, Action<IServiceCollection> services, Func<IServiceProvider, int> run) => new ChallengeWorkbench()
+        public static int RunVerbs(string[] args, Action<IServiceCollection> services, Func<IServiceProvider, int> run) => new ChallengeRunner()
             .ParseVerbs(args)
             .AddServices(services)
             .Run(run);
@@ -147,7 +145,7 @@ namespace Janda.CTF
 
         private int HandleException(Exception ex)
         {
-            var logger = GetService<ILogger<ChallengeWorkbench>>();
+            var logger = GetService<ILogger<ChallengeRunner>>();
 
             if (logger != null)
                 logger.LogCritical(ex.Message, ex);
@@ -204,7 +202,7 @@ namespace Janda.CTF
             var ignore = new[] { "Microsoft.", "System.", "netstandard", "CommandLine." };
 
             return ignore.Any(a => assembly.FullName.StartsWith(a))
-                || assembly.FullName == typeof(ChallengeWorkbench).Namespace;
+                || assembly.FullName == typeof(ChallengeRunner).Namespace;
         }
 
 
@@ -216,46 +214,46 @@ namespace Janda.CTF
         }
 
 
-        internal ChallengeWorkbench AddLogging(Action<ILoggingBuilder> logging)
+        internal ChallengeRunner AddLogging(Action<ILoggingBuilder> logging)
         {
             _logging = logging;
             return this;
         }
 
-        internal ChallengeWorkbench AddConfiguration(Func<IConfiguration> builder)
+        internal ChallengeRunner AddConfiguration(Func<IConfiguration> builder)
         {
             _configuration = builder;
             return this;
         }
 
-        internal ChallengeWorkbench AddServices(Action<IServiceCollection> services)
+        internal ChallengeRunner AddServices(Action<IServiceCollection> services)
         {
             services?.Invoke(_services);
             return this;
         }
 
 
-        internal ChallengeWorkbench ConfigureWorkbench(Action<ChallengeWorkbench> workbench)
+        internal ChallengeRunner ConfigureRunner(Action<ChallengeRunner> runner)
         {
-            workbench?.Invoke(this);
+            runner?.Invoke(this);
             return this;
         }
 
 
-        internal ChallengeWorkbench SetParser(Parser parser)
+        internal ChallengeRunner SetParser(Parser parser)
         {
             _parser = parser;
             return this;
         }
 
-        internal ChallengeWorkbench SetUnparsedOptions(string[] args)
+        internal ChallengeRunner SetUnparsedOptions(string[] args)
         {
             Options = args;
             return this;
         }
 
 
-        internal ChallengeWorkbench ParseOptions<T>(string[] args, Action<ParserResult<T>> unparsed = null) 
+        internal ChallengeRunner ParseOptions<T>(string[] args, Action<ParserResult<T>> unparsed = null) 
         {
             T parsed = default;
 
@@ -270,7 +268,7 @@ namespace Janda.CTF
             return this;
         }
 
-        internal ChallengeWorkbench ParseVerbs(string[] args, Type[] verbs, Action<ParserResult<object>> unparsed = null)
+        internal ChallengeRunner ParseVerbs(string[] args, Type[] verbs, Action<ParserResult<object>> unparsed = null)
         {
             object parsed = default;
 
@@ -285,14 +283,14 @@ namespace Janda.CTF
             return this;
         }
 
-        internal ChallengeWorkbench ParseOptions<T>(string[] args, out T options, Action<ParserResult<T>> unparsed = null)
+        internal ChallengeRunner ParseOptions<T>(string[] args, out T options, Action<ParserResult<T>> unparsed = null)
         {
             ParseOptions<T>(args, unparsed);
             options = (T)Options;
             return this;
         }
 
-        internal ChallengeWorkbench ParseVerbs(string[] args, Action<ParserResult<object>> unparsed = null)
+        internal ChallengeRunner ParseVerbs(string[] args, Action<ParserResult<object>> unparsed = null)
         {
             ParseVerbs(args, LoadVerbs(), unparsed);
             return this;

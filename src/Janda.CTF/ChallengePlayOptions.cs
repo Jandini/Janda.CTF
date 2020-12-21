@@ -2,8 +2,8 @@
 
 namespace Janda.CTF
 {
-    [Verb("run", isDefault: false, HelpText = "Run multiple challenges.")]
-    class ChallengeRunOptions : IChallengeRunOptions
+    [Verb("play", isDefault: false, HelpText = "Run multiple challenges.")]
+    class ChallengePlayOptions : IChallengePlayOptions
     {
         [Option("scope", Default = "*")]
         public string Scope { get; set; }
