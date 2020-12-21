@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommandLine;
+using CommandLine.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -11,21 +13,35 @@ namespace Janda.CTF
 {
     public class CTF
     {
+        const string TITLE = "CTF workbench";
+
         public static void Run(string[] args, Action<IServiceCollection> services = null)
         {
-            const string TITLE = "CTF Workbench";
 
             var version = Assembly.GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                 .InformationalVersion;
 
-            Console.Title = $"{TITLE} {version}";
+            var title = $"{TITLE} {version}";
+
+            Console.Title = title;
 
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
                 Assembly.LoadFrom(assemblyFile);
 
             new ChallengeWorkbench()
-                .ParseVerbs(args)
+                 .WithParser(new Parser((settings) =>
+                 {
+                     settings.HelpWriter = null;
+                 }))                 
+                .ParseVerbs(args, (result) =>
+                {
+                    Console.WriteLine(HelpText.AutoBuild(result, h => {
+                        h.Heading = title;
+                        h.Copyright = string.Empty;
+                        return HelpText.DefaultParsingErrorsHandler(result, h);
+                    }, e => e));
+                })               
                 .WithServices((services) => services.AddChallengeServices())
                 .WithServices(services)
                 .WithConfiguration(() =>
@@ -40,7 +56,7 @@ namespace Janda.CTF
                 })
                 .WithLogging((logging) =>
                 {
-                    const string LOG_DIR = "logs";
+                    const string LOG_DIR = "Logs";
                     const string LOG_FILE_EXTENSION = "log";
 
                     var loggerConfiguration = new LoggerConfiguration()
@@ -75,6 +91,6 @@ namespace Janda.CTF
                             throw new NotImplementedException();
                     };
                 });
-        }
+        }   
     }
 }
