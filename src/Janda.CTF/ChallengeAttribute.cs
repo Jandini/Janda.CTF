@@ -8,5 +8,6 @@ namespace Janda.CTF
     public class ChallengeAttribute : Attribute
     {
         public string Flag { get; set; }
+        public int Points { get; set; }
     }
 }
