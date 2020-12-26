@@ -6,7 +6,7 @@
     },
     "Add": {
       "commandName": "Project",
-      "commandLineArgs": "add --name C001"
+      "commandLineArgs": "add --name B001 --root Challenges"
     },
     "Play": {
       "commandName": "Project",

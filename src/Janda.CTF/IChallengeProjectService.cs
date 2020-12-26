@@ -4,5 +4,6 @@
     {
         string FindDirectory(string directoryName);
         string FindFile(string fileName);
+        string GetProjectDirectory();
     }
 }
