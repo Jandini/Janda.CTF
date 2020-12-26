@@ -1,16 +1,16 @@
 {
   "profiles": {
-    "Help": {
-      "commandName": "Project",
-      "commandLineArgs": "--help"
-    },
-    "Add": {
+    "Add...": {
       "commandName": "Project",
       "commandLineArgs": "add --name B001 --root Challenges"
     },
-    "Play": {
+    "Play...": {
       "commandName": "Project",
       "commandLineArgs": "play"
+    },
+    "Help...": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
     },
     "C001": {
       "commandName": "Project",
