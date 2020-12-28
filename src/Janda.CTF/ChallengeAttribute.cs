@@ -9,5 +9,6 @@ namespace Janda.CTF
     {
         public string Flag { get; set; }
         public int Points { get; set; }
+        public string Name { get; set; }
     }
 }
