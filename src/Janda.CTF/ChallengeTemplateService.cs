@@ -62,7 +62,7 @@ namespace Janda.CTF
 
                 File.WriteAllText(path, contents);
 
-                _logger.LogTrace("Challenge {name} added successfully", name);
+                _logger.LogTrace("Challenge {name} created in {path}", name, path);
             }
             else
                 _logger.LogError("The challenge {name} file already exist in {path}", name, path);
