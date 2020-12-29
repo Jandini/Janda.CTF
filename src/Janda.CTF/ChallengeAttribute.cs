@@ -3,12 +3,14 @@
 namespace Janda.CTF
 {
     /// <summary>
-    /// Use this attribute to mark completed challenges.
+    /// Use this attribute for describe challenge features.
     /// </summary>
     public class ChallengeAttribute : Attribute
     {
-        public string Flag { get; set; }
-        public int Points { get; set; }
+        public string Type { get; set; }
         public string Name { get; set; }
+        public int Points { get; set; }
+        public int Number { get; set; }
+        public string Flag { get; set; }
     }
 }
