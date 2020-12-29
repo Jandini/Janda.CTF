@@ -1,7 +1,7 @@
-﻿using Janda.CTF;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using QuickStart;
 
-namespace QuickStart
+namespace Janda.CTF.QuickStart
 {
     class Program
     {

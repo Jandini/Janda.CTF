@@ -15,6 +15,10 @@
     "C001": {
       "commandName": "Project",
       "commandLineArgs": "--name C001"
+    },
+    "B001": {
+      "commandName": "Project",
+      "commandLineArgs": "--name B001"
     }
   }
 }

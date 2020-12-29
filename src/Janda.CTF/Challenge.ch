@@ -1,4 +1,3 @@
-using Janda.CTF;
 using Microsoft.Extensions.Logging;
 
 namespace {{namespace}}

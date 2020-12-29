@@ -1,7 +1,7 @@
+using Janda.CTF;
 using Microsoft.Extensions.Logging;
-using QuickStart;
 
-namespace Janda.CTF
+namespace QuickStart
 {
     public class C001 : IChallenge
     {

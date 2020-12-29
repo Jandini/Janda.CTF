@@ -32,7 +32,7 @@ namespace Janda.CTF
                 AddChallenge(options, root);
         }
 
-
+        
         public void AddChallenge(IChallengeTemplateOptions options, string root, int? number = null)
         {            
             var name = options.ChallengeName;
@@ -46,7 +46,7 @@ namespace Janda.CTF
             {            
                 var contents = LoadTemplate(options);
 
-                ReplacePlaceholder(ref contents, "namespace", Assembly.GetEntryAssembly().EntryPoint?.DeclaringType.Namespace ?? typeof(ChallengeTemplateService).Namespace);
+                ReplaceNamespace(ref contents);
                 ReplacePlaceholder(ref contents, "name", name);
 
                 foreach (var property in options.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(OptionAttribute))))
@@ -71,6 +71,17 @@ namespace Janda.CTF
         private void ReplacePlaceholder(ref string contents, string placeholder, object value, object defaultValue = null)
         {
             contents = contents.Replace($"{{{{{placeholder}}}}}", value?.ToString() ?? defaultValue?.ToString() ?? "");
+        }
+
+        private void ReplaceNamespace(ref string contents)
+        {
+            var entryNs = Assembly.GetEntryAssembly().EntryPoint?.DeclaringType.Namespace;
+            var thisNs = typeof(ChallengeTemplateService).Namespace;
+
+            if (!entryNs.StartsWith(thisNs))
+                contents = $"using {thisNs};\r\n" + contents;
+          
+            ReplacePlaceholder(ref contents, "namespace", Assembly.GetEntryAssembly().EntryPoint?.DeclaringType.Namespace ?? typeof(ChallengeTemplateService).Namespace);
         }
 
         private string LoadTemplate(IChallengeTemplateOptions options)
