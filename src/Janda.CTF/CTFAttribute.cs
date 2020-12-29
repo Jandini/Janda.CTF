@@ -5,5 +5,6 @@ namespace Janda.CTF
     public class CTFAttribute : Attribute
     {
         public string Name { get; set; }
+        public bool MaximizeConsole { get; set; }
     }
 }

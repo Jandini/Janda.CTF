@@ -8,6 +8,7 @@ using Serilog;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Janda.CTF
 {
@@ -16,11 +17,16 @@ namespace Janda.CTF
         public static void Run(string[] args, Action<IServiceCollection> services = null)
         {
             var entryPoint = Assembly.GetEntryAssembly().EntryPoint;
+            var ctf = entryPoint.GetCustomAttribute<CTFAttribute>() ?? new CTFAttribute();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && ctf.MaximizeConsole)
+                new CTFConsole().Maximize();
+
             var executingAssembly = Assembly.GetExecutingAssembly();
 
             var version = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;            
             var challengeLogging = entryPoint.GetCustomAttribute<ChallengeLoggingAttribute>() ?? new ChallengeLoggingAttribute();
-            var ctf = entryPoint.GetCustomAttribute<CTFAttribute>() ?? new CTFAttribute();
+            
 
             var title = $"CTF runner {version}";
             Console.Title = title;
