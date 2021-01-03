@@ -12,5 +12,8 @@ namespace Janda.CTF
         public int Points { get; set; }
         public int Number { get; set; }
         public string Flag { get; set; }
+
+        public string Brief { get; set; }
+        public string Hints { get; set; }
     }
 }
