@@ -17,7 +17,7 @@
     <Content Include="appsettings.json">
       <PackagePath>build</PackagePath>
       <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

@@ -24,9 +24,8 @@ namespace Janda.CTF
 
             var executingAssembly = Assembly.GetExecutingAssembly();
 
-            var version = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;            
+            var version = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
             var challengeLogging = entryPoint.GetCustomAttribute<ChallengeLoggingAttribute>() ?? new ChallengeLoggingAttribute();
-            
 
             var title = $"CTF runner {version}";
             Console.Title = title;
@@ -44,7 +43,7 @@ namespace Janda.CTF
                     Console.WriteLine(HelpText.AutoBuild(result, h =>
                     {
                         h.Heading = title;
-                        h.AdditionalNewLineAfterOption = false;                        
+                        h.AdditionalNewLineAfterOption = false;
                         h.Copyright = string.Empty;
                         h.AddDashesToOption = true;
 
@@ -53,13 +52,19 @@ namespace Janda.CTF
                 })
                 .WithConfiguration(() =>
                 {
-                    using var stream = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), typeof(CTF).Namespace)
-                        .GetFileInfo("CTF.appsettings.json").CreateReadStream();
+                    if (ctf.UseEmbeddedAppSettings == false && File.Exists("appsettings.json"))
+                        return new ConfigurationBuilder()
+                            .AddJsonFile("appsettings.json", true)
+                            .Build();
+                    else 
+                    {
+                        using var stream = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), typeof(CTF).Namespace)
+                            .GetFileInfo("CTF.appsettings.json").CreateReadStream();
 
-                    return new ConfigurationBuilder()
-                        .AddJsonStream(stream)
-                        .AddJsonFile("appsettings.json", true)
-                        .Build();
+                        return new ConfigurationBuilder()
+                            .AddJsonStream(stream)
+                            .Build();
+                    }
                 })
                 .WithLogging((logging) =>
                 {
@@ -71,9 +76,9 @@ namespace Janda.CTF
 
                     loggerConfiguration.WriteTo.File(
                         path: Path.Combine(
-                            challengeLogging.LogDirectory ?? string.Empty, 
-                            Assembly.GetEntryAssembly().GetName().Name, 
-                            name, 
+                            challengeLogging.LogDirectory ?? string.Empty,
+                            Assembly.GetEntryAssembly().GetName().Name,
+                            name,
                             Path.ChangeExtension($"{name}-{DateTime.Now:yyyyMMddHHmmss}", challengeLogging.LogFileExtension ?? "log")));
 
                     logging.AddSerilog(
