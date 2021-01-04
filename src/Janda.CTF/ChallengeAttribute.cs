@@ -15,6 +15,6 @@ namespace Janda.CTF
 
         public string Brief { get; set; }
         public string Hints { get; set; }
-        public string Files { get; set; }
+        public string Resources { get; set; }
     }
 }
