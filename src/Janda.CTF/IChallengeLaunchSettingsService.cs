@@ -2,6 +2,6 @@
 {
     internal interface IChallengeLaunchSettingsService
     {
-        void AddChallenge(string name);
+        void AddChallenge(string challengeName, string className);
     }
 }

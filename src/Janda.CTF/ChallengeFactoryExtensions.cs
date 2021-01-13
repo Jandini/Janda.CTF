@@ -14,7 +14,7 @@ namespace Janda.CTF
             foreach (var challenge in challenges)
             {
                 if (!ChallengeFactory._challenges.TryAdd(challenge.Name, challenge))
-                    throw new Exception($"Challenge \"{challenge.Name}\" is already registered.");
+                    throw new Exception($"Challenge \"{challenge.Name}\" class is already registered.");
 
                 services.AddTransient(challenge);
             }

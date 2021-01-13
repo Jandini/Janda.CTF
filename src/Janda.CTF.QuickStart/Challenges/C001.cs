@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace QuickStart
 {
+    [Challenge(Name = "Hello World")]
     public class C001 : IChallenge
     {
         readonly ILogger<C001> _logger;

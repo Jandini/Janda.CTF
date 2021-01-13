@@ -15,17 +15,17 @@ namespace Janda.CTF
             _project = project;
         }
 
-        public void AddChallenge(string name)
-        {
+        public void AddChallenge(string challengeName, string className)
+        {            
             const string LAUNCH_SETTINGS_JSON = "launchSettings.json";
-            _logger.LogTrace("Adding challenge {name} to {file}", name, LAUNCH_SETTINGS_JSON);
+            _logger.LogTrace("Adding challenge {name} to {file}", className, LAUNCH_SETTINGS_JSON);
 
             var sb = new StringBuilder();
             var launchSettings = _project.FindFile(LAUNCH_SETTINGS_JSON);
 
             foreach (var line in File.ReadAllLines(launchSettings))
             {
-                if (line.Contains($"\"{name}\":"))
+                if (line.Contains($"\"{challengeName}\":"))
                 {                    
                     sb = null;
                     break;
@@ -40,9 +40,9 @@ namespace Janda.CTF
             if (sb != null)
             {
                 sb.AppendLine($"{"",4}}},");
-                sb.AppendLine($"{"",4}\"{name}\": {{");
+                sb.AppendLine($"{"",4}\"{challengeName}\": {{");
                 sb.AppendLine($"{"",6}\"commandName\": \"Project\",");
-                sb.AppendLine($"{"",6}\"commandLineArgs\": \"--name {name}\"");
+                sb.AppendLine($"{"",6}\"commandLineArgs\": \"run --class {className}\"");
                 sb.AppendLine($"{"",4}}}");
                 sb.AppendLine($"{"",2}}}");
                 sb.AppendLine($"}}");
@@ -51,7 +51,7 @@ namespace Janda.CTF
             }
             else
             {
-                _logger.LogTrace("Challenge {name} already exist in {file}", name, LAUNCH_SETTINGS_JSON);
+                _logger.LogTrace("Challenge {name} already exist in {file}", challengeName, LAUNCH_SETTINGS_JSON);
             }
         }
     }

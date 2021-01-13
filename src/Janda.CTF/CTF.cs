@@ -27,17 +27,14 @@ namespace Janda.CTF
             var version = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
             var challengeLogging = entryPoint.GetCustomAttribute<ChallengeLoggingAttribute>() ?? new ChallengeLoggingAttribute();
 
-            var title = $"CTF runner {version}";
+            var title = $"{executingAssembly.GetName().Name} {version}";
             Console.Title = title;
 
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
                 Assembly.LoadFrom(assemblyFile);
-
+            
             new ChallengeRunner()
-                 .WithParser(new Parser((settings) =>
-                 {
-                     settings.HelpWriter = null;
-                 }))
+                .WithParser(new Parser((settings) => { settings.HelpWriter = null; }))
                 .ParseVerbs(args, (result) =>
                 {
                     Console.WriteLine(HelpText.AutoBuild(result, h =>
@@ -72,7 +69,7 @@ namespace Janda.CTF
                         .ReadFrom.Configuration(ChallengeRunner.Configuration);
 
                     var options = ChallengeRunner.Options as IChallengeOptions;
-                    var name = options?.Name ?? "CTF";
+                    var name = options?.Class ?? "CTF";
 
                     loggerConfiguration.WriteTo.File(
                         path: Path.Combine(

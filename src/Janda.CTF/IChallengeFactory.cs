@@ -2,7 +2,7 @@
 {
     interface IChallengeFactory
     {
-        void Run(string name);
+        void Run(string className);
         string[] GetChallenges();
     }
 }

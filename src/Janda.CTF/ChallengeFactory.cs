@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Janda.CTF
 {
@@ -22,14 +23,16 @@ namespace Janda.CTF
             return _challenges.Keys.ToArray();
         }
 
-        public void Run(string name)
+        public void Run(string className)
         {
             var previous = Console.Title;
 
-            if (!_challenges.ContainsKey(name))
-                throw new Exception($"Challenge \"{name}\" was not found.");
+            if (!_challenges.ContainsKey(className))
+                throw new Exception($"Challenge class \"{className}\" was not found.");
 
-            var challenge = (IChallenge)_services.GetService(_challenges[name]);            
+            var type = _challenges[className];
+            var challenge = (IChallenge)_services.GetService(type);
+            var name = type.GetCustomAttribute<ChallengeAttribute>()?.Name ?? className;
 
             _logger.LogTrace("Running challange {name}", name);
 
@@ -37,7 +40,7 @@ namespace Janda.CTF
             {
                 Console.Title = $"{previous} - Running {name}";
                 challenge.Run();
-                _logger.LogTrace("Challenge {name} completed", name);
+                _logger.LogTrace("Finished challenge {name}", name);
             }
             catch (Exception ex)
             {

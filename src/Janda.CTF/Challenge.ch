@@ -5,12 +5,12 @@ namespace {{namespace}}
     [Challenge(Name = "{{name}}",
         Brief = @"
             ...
-    ")]
-    public class {{name}} : IChallenge
+        ")]
+    public class {{class}} : IChallenge
     {
-        private readonly ILogger<{{name}}> _logger;
+        private readonly ILogger<{{class}}> _logger;
 
-        public {{name}}(ILogger<{{name}}> logger)
+        public {{class}}(ILogger<{{class}}> logger)
         {
             _logger = logger;
         }

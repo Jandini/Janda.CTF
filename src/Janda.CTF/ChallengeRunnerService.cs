@@ -16,7 +16,7 @@ namespace Janda.CTF
         public void Run(IChallengePlayOptions options)
         {
             var challenges = _factory.GetChallenges();            
-            _logger.LogTrace("Playing {@challenges}", string.Join(", ", challenges));
+            _logger.LogTrace("Playing {@challenges}", string.Join("; ", challenges));
 
             foreach (var challenge in challenges)
                 _factory.Run(challenge);
@@ -24,7 +24,7 @@ namespace Janda.CTF
 
         public void Run(IChallengeOptions options)
         {            
-            _factory.Run(options.Name);
+            _factory.Run(options.Class);
         }
     }
 }

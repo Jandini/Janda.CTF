@@ -32,40 +32,47 @@ namespace Janda.CTF
                 AddChallenge(options, root);
         }
 
+
+
         
         public void AddChallenge(IChallengeTemplateOptions options, string root, int? number = null)
-        {            
-            var name = options.ChallengeName;
+        {                        
+            var className = options.ChallengeClass.ToPascalCase() ?? options.ChallengeName.ToPascalCase();
+            var challengeName = (string.IsNullOrEmpty(options.ChallengeName) ? className : options.ChallengeName).Replace("\"", "\\\"");
+
+            if (string.IsNullOrEmpty(className))
+                throw new Exception("Challenge class is invalid or empty.");
 
             if (number != null)
-                name += ((int)number).ToString("D" + options.CounterPadding);
+                className += ((int)number).ToString("D" + options.CounterPadding);
 
-            var path = Path.Combine(root, Path.ChangeExtension(name, "cs"));
+            var path = Path.Combine(root, Path.ChangeExtension(className, "cs"));
 
             if (!File.Exists(path))
             {            
                 var contents = LoadTemplate(options);
 
                 ReplaceNamespace(ref contents);
-                ReplacePlaceholder(ref contents, "name", name);
+                ReplacePlaceholder(ref contents, "class", className);
+                ReplacePlaceholder(ref contents, "name", challengeName);                
 
                 foreach (var property in options.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(OptionAttribute))))
                     ReplacePlaceholder(ref contents, property.GetCustomAttributes(typeof(OptionAttribute), false).Cast<OptionAttribute>().First().LongName, property.GetValue(options));
 
-                _launchSettings.AddChallenge(name);
+                _launchSettings.AddChallenge(challengeName, className);
 
                 if (options.HasResourceDir)
                 {
-                    _logger.LogTrace("Create resource directory for {name}", name);
-                    Directory.CreateDirectory(Path.Combine(root, name));
+                    _logger.LogTrace("Create resource directory for {name}", className);
+                    Directory.CreateDirectory(Path.Combine(root, className));
                 }
 
                 File.WriteAllText(path, contents);
 
-                _logger.LogTrace("Challenge {name} created in {path}", name, path);
+                _logger.LogTrace("Challenge {name} created in {path}", challengeName, path);
             }
             else
-                _logger.LogError("The challenge {name} file already exist in {path}", name, path);
+                _logger.LogError("The challenge {name} file already exist in {path}", challengeName, path);
         }
 
         private void ReplacePlaceholder(ref string contents, string placeholder, object value, object defaultValue = null)

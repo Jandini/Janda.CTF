@@ -3,6 +3,7 @@ namespace Janda.CTF
     interface IChallengeTemplateOptions
     {
         string ChallengeName { get; }
+        string ChallengeClass { get; }
         string TemplateName { get; }
         string ChallengeDir { get; }
         int? ChallengeCount { get; }

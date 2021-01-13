@@ -2,6 +2,6 @@ namespace Janda.CTF
 {
     interface IChallengeOptions
     {
-        string Name { get; }
+        string Class { get; }
     }
 }

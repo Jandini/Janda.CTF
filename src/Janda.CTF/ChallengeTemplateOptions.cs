@@ -5,8 +5,11 @@ namespace Janda.CTF
     [Verb("add", isDefault: false, HelpText = "Add new challenge.")]
     public class ChallengeTemplateOptions : IChallengeTemplateOptions
     {
-        [Option("name", HelpText = "Challenge name.", Required = true)]        
+        [Option("name", HelpText = "Challenge name.", Group = "Name", Required = true)]
         public string ChallengeName { get; set; }
+
+        [Option("class", HelpText = "Challenge class name.", Group = "Name", Required = true)]
+        public string ChallengeClass { get; set; }
 
         [Option("template", Default = "Challenge", HelpText = "Challenge template name.")]
         public virtual string TemplateName { get; set; }
