@@ -34,7 +34,23 @@
       <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
 
-    <Content Include="appsettings.json">
+
+<None Include="appsettings.json">
+        <Pack>true</Pack>
+        <PackageCopyToOutput>true</PackageCopyToOutput>
+        <PackageFlatten>true</PackageFlatten>
+        <PackagePath>contentFiles\;content\</PackagePath>
+</None>
+
+<None Include="Properties/launchSettings.json">
+        <Pack>true</Pack>
+        <PackageCopyToOutput>true</PackageCopyToOutput>
+        <PackageFlatten>true</PackageFlatten>
+        <PackagePath>contentFiles\Properties;content\Properties</PackagePath>
+</None>
+
+
+<!--    <Content Include="appsettings.json">
       <IncludeInPackage>true</IncludeInPackage>
       <PackagePath>contentFiles</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
@@ -48,7 +64,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <PackageCopyToOutput>true</PackageCopyToOutput>
       <CopyToOutput>true</CopyToOutput>
-    </Content>
+    </Content>-->
 
   </ItemGroup>
 
