@@ -33,10 +33,19 @@
       <PackagePath>build</PackagePath>
       <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
-    <Content Include="appsettings.json;Janda.CTF.targets;Properties/launchSettings.json">
+
+    <Content Include="appsettings.json">
       <IncludeInPackage>true</IncludeInPackage>
-      <PackagePath>build</PackagePath>
+      <PackagePath>content</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
+
+    <Content Include="Properties/launchSettings.json">
+      <IncludeInPackage>true</IncludeInPackage>
+      <PackagePath>content</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+
   </ItemGroup>
 
   <ItemGroup>
