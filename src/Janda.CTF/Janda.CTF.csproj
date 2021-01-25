@@ -6,7 +6,7 @@
     <Owners>Matt Janda</Owners>
     <Description>Provides capture the flag challenge runner.</Description>
     <PackageId>Janda.CTF</PackageId>
-    <PackageIcon>CTF.ico</PackageIcon>
+    <PackageIcon>CTF.png</PackageIcon>
     <Copyright />
   </PropertyGroup>
 
@@ -22,8 +22,7 @@
     <None Remove="appsettings.json" />
     <None Remove="Challenge.ch" />
     <None Remove="CTF.appsettings.json" />
-    <None Include="CTF.ico">
-      <!-- https://www.iconarchive.com/show/papirus-apps-icons-by-papirus-team/utilities-terminal-icon.html -->
+    <None Include="CTF.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -59,12 +58,7 @@
 
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
 
-    <PackageReference Include="GitVersionTask" Version="5.3.3" >
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-
-    <PackageReference Include="Janda.Dot.Nuget" Version="0.3.0">
+    <PackageReference Include="GitVersionTask" Version="5.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
