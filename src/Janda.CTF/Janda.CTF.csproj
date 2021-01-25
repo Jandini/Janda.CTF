@@ -36,14 +36,14 @@
 
     <Content Include="appsettings.json">
       <IncludeInPackage>true</IncludeInPackage>
-      <PackagePath>content</PackagePath>
+      <PackagePath>contentFiles</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
       <CopyToOutput>true</CopyToOutput>
     </Content>
 
     <Content Include="Properties/launchSettings.json">
       <IncludeInPackage>true</IncludeInPackage>
-      <PackagePath>content</PackagePath>
+      <PackagePath>contentFiles</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
       <CopyToOutput>true</CopyToOutput>
     </Content>
