@@ -38,12 +38,14 @@
       <IncludeInPackage>true</IncludeInPackage>
       <PackagePath>content</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
+      <CopyToOutput>true</CopyToOutput>
     </Content>
 
     <Content Include="Properties/launchSettings.json">
       <IncludeInPackage>true</IncludeInPackage>
       <PackagePath>content</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
+      <CopyToOutput>true</CopyToOutput>
     </Content>
 
   </ItemGroup>
