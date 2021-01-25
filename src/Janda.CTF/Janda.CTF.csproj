@@ -37,14 +37,18 @@
 
     <Content Include="appsettings.json">
       <Pack>true</Pack>
+      <IncludeInPackage>true</IncludeInPackage>
       <PackagePath>contentFiles\any\any\;content\any\any\</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
       <CopyToOutput>true</CopyToOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 
     <Content Include="Properties/launchSettings.json">
       <Pack>true</Pack>
       <PackagePath>contentFiles\any\any\Properties;content\any\any\Properties</PackagePath>
+      <IncludeInPackage>true</IncludeInPackage>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 
   </ItemGroup>
