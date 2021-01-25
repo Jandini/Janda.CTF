@@ -35,19 +35,19 @@
     </EmbeddedResource>
 
 
-<None Include="appsettings.json">
+<Content Include="appsettings.json">
         <Pack>true</Pack>
         <PackageCopyToOutput>true</PackageCopyToOutput>
         <PackageFlatten>true</PackageFlatten>
         <PackagePath>contentFiles\;content\</PackagePath>
-</None>
+</Content>
 
-<None Include="Properties/launchSettings.json">
+<Content Include="Properties/launchSettings.json">
         <Pack>true</Pack>
         <PackageCopyToOutput>true</PackageCopyToOutput>
         <PackageFlatten>true</PackageFlatten>
         <PackagePath>contentFiles\Properties;content\Properties</PackagePath>
-</None>
+</Content>
 
 
 <!--    <Content Include="appsettings.json">
