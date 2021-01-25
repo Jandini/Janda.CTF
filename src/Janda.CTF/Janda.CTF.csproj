@@ -34,33 +34,18 @@
       <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
 
-<Content Include="contentFiles/**/*.*">
-    <Pack>true</Pack>
-    <PackagePath>contentFiles;content</PackagePath>
-    <IncludeInPackage>true</IncludeInPackage>
-    <CopyToOutput>true</CopyToOutput>
-    <BuildAction>Content</BuildAction>
-    <copyToOutput>true</copyToOutput>
-    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-</Content>
 
-
-<!--    <Content Include="appsettings.json">
-      <IncludeInPackage>true</IncludeInPackage>
-      <PackagePath>contentFiles</PackagePath>
+    <Content Include="appsettings.json">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles\any\any\;content\any\any\</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToOutput>true</CopyToOutput>
     </Content>
 
     <Content Include="Properties/launchSettings.json">
-      <IncludeInPackage>true</IncludeInPackage>
-      <PackagePath>contentFiles/Properties</PackagePath>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-      <CopyToOutput>true</CopyToOutput>
-    </Content>-->
+      <Pack>true</Pack>
+      <PackagePath>contentFiles\any\any\Properties;content\any\any\Properties</PackagePath>
+    </Content>
 
   </ItemGroup>
 
