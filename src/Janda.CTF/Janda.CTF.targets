@@ -1,19 +1,32 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
-  <Target Name="DefaultAppSettings" BeforeTargets="CollectPackageReferences;Restore" Condition= " !Exists('$(ProjectDir)appsettings.json') " >
+
+  <Target Name="VisualStudioAddFiles" BeforeTargets="CollectPackageReferences" Condition= " '$(BuildingInsideVisualStudio)' == 'true' AND !Exists('$(SolutionDir).vs/$(ProjectName)/Janda.CTF.log') " >
     <ItemGroup>
       <ProjectFilesToCopy Include="$(MSBuildThisFileDirectory)appsettings.json" />
-    </ItemGroup>    
-    <Message Importance="high" Text="Adding default @(FilesToCopy) to $(ProjectDir)" />
-    <Copy SourceFiles="@(ProjectFilesToCopy)" DestinationFolder="$(ProjectDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="You must set %22Copy to Output Directory%22 property for appsettings.json" />
-    <MakeDir Directories="$(ProjectDir)/Challenges" />
-  </Target>
+    </ItemGroup>
 
-  <Target Name="DefaultLaunchSettings" BeforeTargets="CollectPackageReferences;Restore" Condition= " !Exists('$(ProjectDir)/Properties/launchSettings.json') " >
     <ItemGroup>
       <PropertiesFilesToCopy Include="$(MSBuildThisFileDirectory)launchSettings.json" />
     </ItemGroup>
-    <Copy SourceFiles="@(PropertiesFilesToCopy)" DestinationFolder="$(ProjectDir)/Properties" SkipUnchangedFiles="true" />
+
+    <PropertyGroup>
+      <LogTimestamp>$([System.DateTime]::Now.ToString())</LogTimestamp>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+      <LogLines>
+[$(LogTimestamp)] Added Janda.CTF to $(PackageId) $(PackageVersion)
+[$(LogTimestamp)] Created Visual Studio launchSettings.json file with default profiles.
+[$(LogTimestamp)] Added appsettings.json file with logging configuration. Set %22Copy to Output Directory%22 to override embedded settings.
+[$(LogTimestamp)] Created $(ProjectDir)Challenges directory.
+      </LogLines>
+    </PropertyGroup>
+
+    <Message Importance="high" Text="Adding default @(FilesToCopy) to $(ProjectDir)" />
+    <Copy Condition= " !Exists('$(ProjectDir)/Properties/launchSettings.json') " SourceFiles="@(PropertiesFilesToCopy)" DestinationFolder="$(ProjectDir)/Properties" SkipUnchangedFiles="true" />
+    <Copy Condition= " !Exists('$(ProjectDir)appsettings.json') " SourceFiles="@(ProjectFilesToCopy)" DestinationFolder="$(ProjectDir)" SkipUnchangedFiles="true" />
+    <MakeDir Directories="$(ProjectDir)Challenges" />
+    <WriteLinesToFile File="$(SolutionDir).vs/$(ProjectName)/Janda.CTF.log" Lines="$(LogLines)" Overwrite="false" />
   </Target>
+
 </Project>
