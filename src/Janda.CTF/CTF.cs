@@ -67,9 +67,6 @@ namespace Janda.CTF
                             .Build();
                     }
                 })
-                // this must be added as it was missed in RightTurn.Extensions.Logging
-                .WithLogging() 
-                // this extension was added here so we can access directions container when configuring logging
                 .WithLogging((logging, turn) =>
                 {
                     var loggerConfiguration = new LoggerConfiguration()
