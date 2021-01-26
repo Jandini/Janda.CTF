@@ -4,6 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using RightTurn;
+using RightTurn.Extensions.CommandLine;
+using RightTurn.Extensions.Configuration;
+using RightTurn.Extensions.Logging;
 using Serilog;
 using System;
 using System.IO;
@@ -33,7 +37,7 @@ namespace Janda.CTF
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
                 Assembly.LoadFrom(assemblyFile);
             
-            new ChallengeRunner()
+            new Turn()
                 .WithParser(new Parser((settings) => { settings.HelpWriter = null; }))
                 .ParseVerbs(args, (result) =>
                 {
@@ -63,12 +67,15 @@ namespace Janda.CTF
                             .Build();
                     }
                 })
-                .WithLogging((logging) =>
+                // this must be added as it was missed in RightTurn.Extensions.Logging
+                .WithLogging() 
+                // this extension was added here so we can access directions container when configuring logging
+                .WithLogging((logging, turn) =>
                 {
                     var loggerConfiguration = new LoggerConfiguration()
-                        .ReadFrom.Configuration(ChallengeRunner.Configuration);
+                        .ReadFrom.Configuration(turn.Directions.Configuration());
 
-                    var options = ChallengeRunner.Options as IChallengeOptions;
+                    var options = turn.Directions.TryGet<object>() as IChallengeOptions;
                     var name = options?.Class ?? "CTF";
 
                     loggerConfiguration.WriteTo.File(
@@ -85,16 +92,19 @@ namespace Janda.CTF
                 })
                 .WithServices((services) => services.AddChallengeServices())
                 .WithServices(services)
-                .Run((provider) =>
+                .WithDirections()
+                .WithUnhandledExceptionLogging()
+                .Take((provider) =>
                 {
                     var logger = provider.GetRequiredService<ILogger<CTF>>();
+                    var directions = provider.GetRequiredService<ITurnDirections>();
 
                     if (!string.IsNullOrEmpty(ctf?.Name))
                         logger.LogTrace("Started {name}", ctf.Name);
 
                     logger.LogTrace("Using {title}", title);
 
-                    switch (ChallengeRunner.Options)
+                    switch (directions.Get<object>())
                     {
                         case IChallengeOptions options:
                             provider.GetRequiredService<IChallengeRunnerService>().Run(options);

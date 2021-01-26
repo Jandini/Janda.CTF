@@ -21,7 +21,7 @@
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="Challenge.ch" />
-    <None Remove="CTF.appsettings.json" />
+    <None Remove="CTF.appsettings.json" />    
     <None Include="CTF.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -34,8 +34,8 @@
       <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
     <Content Include="appsettings.json;Janda.CTF.targets;Properties/launchSettings.json">
-    	 <IncludeInPackage>true</IncludeInPackage>
-	 <PackagePath>build</PackagePath>
+      <IncludeInPackage>true</IncludeInPackage>
+      <PackagePath>build</PackagePath>
     </Content>
   </ItemGroup>
 
@@ -44,19 +44,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.4" />
+    <PackageReference Include="RightTurn.Extensions.CommandLine" Version="0.1.0-alpha.1" />
+    <PackageReference Include="RightTurn.Extensions.Configuration" Version="0.1.0-alpha.1" />
+    <PackageReference Include="RightTurn.Extensions.Serilog" Version="0.1.0-alpha.1" />
 
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
 
     <PackageReference Include="GitVersionTask" Version="5.3.3">
       <PrivateAssets>all</PrivateAssets>
