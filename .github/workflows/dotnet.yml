@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ develop ]
 
+env:
+  working-directory: ./src
+
 jobs:
   build:
 
