@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ ci ]
   pull_request:
-    branches: [ develop ]
+    branches: [ ci ]
 
 defaults:
   run:
