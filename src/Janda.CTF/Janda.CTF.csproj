@@ -56,7 +56,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="RightTurn.Extensions.CommandLine" Version="0.1.0-alpha.4" />
+    <PackageReference Include="RightTurn.Extensions.CommandLine" Version="0.1.0-alpha.8" />
     <PackageReference Include="RightTurn.Extensions.Configuration" Version="0.1.0-alpha.4" />
     <PackageReference Include="RightTurn.Extensions.Serilog" Version="0.1.0-alpha.6" />
 
