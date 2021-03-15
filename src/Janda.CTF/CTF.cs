@@ -36,28 +36,28 @@ namespace Janda.CTF
 
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
                 Assembly.LoadFrom(assemblyFile);
-            
-new Turn()
-    .WithParser(new Parser((settings) => { settings.HelpWriter = null; }))
-    .ParseVerbs(args, (result) =>
-    {
-        Console.WriteLine(HelpText.AutoBuild(result, h =>
-        {
-            h.Heading = title;
-            h.AdditionalNewLineAfterOption = false;
-            h.Copyright = string.Empty;
-            h.AddDashesToOption = true;
 
-            return HelpText.DefaultParsingErrorsHandler(result, h);
-        }, e => e, true));
-    })
+            new Turn()
+                .WithParser(new Parser((settings) => { settings.HelpWriter = null; }))
+                .ParseVerbs(args, (result) =>
+                {
+                    Console.WriteLine(HelpText.AutoBuild(result, h =>
+                    {
+                        h.Heading = title;
+                        h.AdditionalNewLineAfterOption = false;
+                        h.Copyright = string.Empty;
+                        h.AddDashesToOption = true;
+
+                        return HelpText.DefaultParsingErrorsHandler(result, h);
+                    }, e => e, true));
+                })                
                 .WithConfiguration(() =>
                 {
                     if (ctf.UseEmbeddedAppSettings == false && File.Exists("appsettings.json"))
                         return new ConfigurationBuilder()
                             .AddJsonFile("appsettings.json", true)
                             .Build();
-                    else 
+                    else
                     {
                         using var stream = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), typeof(CTF).Namespace)
                             .GetFileInfo("CTF.appsettings.json").CreateReadStream();
@@ -92,34 +92,34 @@ new Turn()
                 .WithServices(services)
                 .WithDirections()
                 .WithUnhandledExceptionLogging()
-.Take((provider) =>
-{
-    var logger = provider.GetRequiredService<ILogger<CTF>>();
-    var directions = provider.GetRequiredService<ITurnDirections>();
+            .Take((provider) =>
+            {
+                var logger = provider.GetRequiredService<ILogger<CTF>>();
+                var directions = provider.GetRequiredService<ITurnDirections>();
 
-    if (!string.IsNullOrEmpty(ctf?.Name))
-        logger.LogTrace("Started {name}", ctf.Name);
+                if (!string.IsNullOrEmpty(ctf?.Name))
+                    logger.LogTrace("Started {name}", ctf.Name);
 
-    logger.LogTrace("Using {title}", title);
+                logger.LogTrace("Using {title}", title);
 
-    switch (directions.Get<ITurnArgs>().Options)
-    {
-        case IChallengeOptions options:
-            provider.GetRequiredService<IChallengeRunnerService>().Run(options);
-            break;
+                switch (directions.Get<ITurnArgs>().Options)
+                {
+                    case IChallengeOptions options:
+                        provider.GetRequiredService<IChallengeRunnerService>().Run(options);
+                        break;
 
-        case IChallengePlayOptions options:
-            provider.GetRequiredService<IChallengeRunnerService>().Run(options);
-            break;
+                    case IChallengePlayOptions options:
+                        provider.GetRequiredService<IChallengeRunnerService>().Run(options);
+                        break;
 
-        case IChallengeTemplateOptions options:
-            provider.GetRequiredService<IChallengeTemplateService>().AddChallenges(options);
-            break;
+                    case IChallengeTemplateOptions options:
+                        provider.GetRequiredService<IChallengeTemplateService>().AddChallenges(options);
+                        break;
 
-        default:
-            throw new NotImplementedException();
-    };
-});
+                    default:
+                        throw new NotImplementedException();
+                };
+            });
         }
     }
 }
