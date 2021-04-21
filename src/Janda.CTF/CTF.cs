@@ -23,8 +23,8 @@ namespace Janda.CTF
             var entryPoint = Assembly.GetEntryAssembly().EntryPoint;
             var ctf = entryPoint.GetCustomAttribute<CTFAttribute>() ?? new CTFAttribute();
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && ctf.MaximizeConsole)
-                new CTFConsole().Maximize();
+            if (ctf.MaximizeConsole)
+                CTFConsole.Maximize();
 
             var executingAssembly = Assembly.GetExecutingAssembly();
 
@@ -36,7 +36,7 @@ namespace Janda.CTF
 
             foreach (var assemblyFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Template?.*.dll"))
                 Assembly.LoadFrom(assemblyFile);
-            
+
             new Turn()
                 .WithParser(new Parser((settings) => { settings.HelpWriter = null; }))
                 .ParseVerbs(args, (result) =>
@@ -50,14 +50,14 @@ namespace Janda.CTF
 
                         return HelpText.DefaultParsingErrorsHandler(result, h);
                     }, e => e, true));
-                })
+                })                
                 .WithConfiguration(() =>
                 {
                     if (ctf.UseEmbeddedAppSettings == false && File.Exists("appsettings.json"))
                         return new ConfigurationBuilder()
                             .AddJsonFile("appsettings.json", true)
                             .Build();
-                    else 
+                    else
                     {
                         using var stream = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), typeof(CTF).Namespace)
                             .GetFileInfo("CTF.appsettings.json").CreateReadStream();
@@ -72,8 +72,9 @@ namespace Janda.CTF
                     var loggerConfiguration = new LoggerConfiguration()
                         .ReadFrom.Configuration(turn.Directions.Configuration());
 
-                    var options = turn.Directions.TryGet<object>() as IChallengeOptions;
-                    var name = options?.Class ?? "CTF";
+                    var name = turn.Directions.TryGet<ITurnArgs>().TryGetOptions<IChallengeOptions>(out var options)
+                        ? options.Class
+                        : "CTF";
 
                     loggerConfiguration.WriteTo.File(
                         path: Path.Combine(
@@ -91,34 +92,34 @@ namespace Janda.CTF
                 .WithServices(services)
                 .WithDirections()
                 .WithUnhandledExceptionLogging()
-                .Take((provider) =>
+            .Take((provider) =>
+            {
+                var logger = provider.GetRequiredService<ILogger<CTF>>();
+                var directions = provider.GetRequiredService<ITurnDirections>();
+
+                if (!string.IsNullOrEmpty(ctf?.Name))
+                    logger.LogTrace("Started {name}", ctf.Name);
+
+                logger.LogTrace("Using {title}", title);
+
+                switch (directions.Get<ITurnArgs>().Options)
                 {
-                    var logger = provider.GetRequiredService<ILogger<CTF>>();
-                    var directions = provider.GetRequiredService<ITurnDirections>();
+                    case IChallengeOptions options:
+                        provider.GetRequiredService<IChallengeRunnerService>().Run(options);
+                        break;
 
-                    if (!string.IsNullOrEmpty(ctf?.Name))
-                        logger.LogTrace("Started {name}", ctf.Name);
+                    case IChallengePlayOptions options:
+                        provider.GetRequiredService<IChallengeRunnerService>().Run(options);
+                        break;
 
-                    logger.LogTrace("Using {title}", title);
+                    case IChallengeTemplateOptions options:
+                        provider.GetRequiredService<IChallengeTemplateService>().AddChallenges(options);
+                        break;
 
-                    switch (directions.Get<object>())
-                    {
-                        case IChallengeOptions options:
-                            provider.GetRequiredService<IChallengeRunnerService>().Run(options);
-                            break;
-
-                        case IChallengePlayOptions options:
-                            provider.GetRequiredService<IChallengeRunnerService>().Run(options);
-                            break;
-
-                        case IChallengeTemplateOptions options:
-                            provider.GetRequiredService<IChallengeTemplateService>().AddChallenges(options);
-                            break;
-
-                        default:
-                            throw new NotImplementedException();
-                    };
-                });
+                    default:
+                        throw new NotImplementedException();
+                };
+            });
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Janda.CTF
         public ChallengeFactory(ILogger<ChallengeFactory> logger, IServiceProvider services)
         {
             _logger = logger;
-            _services = services;            
+            _services = services;
         }
 
         public string[] GetChallenges()
@@ -25,7 +25,7 @@ namespace Janda.CTF
 
         public void Run(string className)
         {
-            var previous = Console.Title;
+            CTFConsole.PushTitle();
 
             if (!_challenges.ContainsKey(className))
                 throw new Exception($"Challenge class \"{className}\" was not found.");
@@ -38,7 +38,7 @@ namespace Janda.CTF
 
             try
             {
-                Console.Title = $"{previous} - Running {name}";
+                CTFConsole.SetTitle($"{CTFConsole.Title} - Running {name}");
                 challenge.Run();
                 _logger.LogTrace("Finished challenge {name}", name);
             }
@@ -48,8 +48,8 @@ namespace Janda.CTF
             }
             finally
             {
-                Console.Title = previous;
+                CTFConsole.PopTitle();
             }
-        }     
+        }
     }
 }
