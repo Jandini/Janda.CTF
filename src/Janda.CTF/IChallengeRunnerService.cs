@@ -16,5 +16,11 @@
         /// <returns></returns>
         void Run(IChallengePlayOptions options);
 
+        /// <summary>
+        /// List challenges
+        /// </summary>
+        /// <param name="options"></param>
+        void List(IChallengeListOptions options);
+
     }
 }

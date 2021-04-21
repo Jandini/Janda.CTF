@@ -5,7 +5,7 @@ namespace Janda.CTF
     /// <summary>
     /// Use this attribute for describe challenge features.
     /// </summary>
-    public class ChallengeAttribute : Attribute
+    public class ChallengeAttribute : Attribute, IChallengeDetails
     {
         public string Type { get; set; }
         public string Name { get; set; }

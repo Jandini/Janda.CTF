@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Janda.CTF.QuickStart
 {  
-    [Challenge(Name = "B001")]
+    [Challenge()]
     public class B001 : IChallenge
     {
         private readonly ILogger<B001> _logger;
