@@ -1,3 +1,5 @@
+[![.NET](https://github.com/Jandini/Janda.CTF/actions/workflows/dotnet.yml/badge.svg?branch=develop)](https://github.com/Jandini/Janda.CTF/actions/workflows/dotnet.yml)
+
 # Janda.CTF
 
 **Capture The Flag** is a console application challenge runner. 
