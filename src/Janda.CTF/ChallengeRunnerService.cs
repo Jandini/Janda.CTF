@@ -18,7 +18,7 @@ namespace Janda.CTF
         public void List(IChallengeListOptions options)
         {
             var classes = _factory.GetChallengeClasses();
-            var longest = classes.Max(className => _factory.GetChallengeDetails(className)?.Name.Length ?? className.Length);
+            var longest = classes.Max(className => _factory.GetChallengeDetails(className)?.Name?.Length ?? className.Length);
 
             foreach (var className in classes) 
             {
