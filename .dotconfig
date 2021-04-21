@@ -5,3 +5,5 @@ DOT_BUILD_SOLUTIONS=Janda.CTF
 DOT_PUBLISH_RUNTIMES=win-x64
 # Add publish arguments e.g. -c Release -p:PublishSingleFile=true -p:PublishTrimmed=true
 DOT_PUBLISH_ARGUMENTS=-c Release
+# Add dot nuget pakcage to project before packing and remove after
+DOT_NUGET_PROJECTS=Janda.CTF

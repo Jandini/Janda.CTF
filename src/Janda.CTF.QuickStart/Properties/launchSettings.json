@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "Add...": {
+      "commandName": "Project",
+      "commandLineArgs": "add --name \"Who's on first\" --root Challenges"
+    },
+    "Play...": {
+      "commandName": "Project",
+      "commandLineArgs": "play"
+    },
+    "Help...": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
+    },
+    "C001": {
+      "commandName": "Project",
+      "commandLineArgs": "run --class C001"
+    },
+    "B001": {
+      "commandName": "Project",
+      "commandLineArgs": "run --class B001"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <Authors>Matt Janda</Authors>
+    <Owners>Matt Janda</Owners>
+    <Description>Provides capture the flag challenge runner.</Description>
+    <PackageId>Janda.CTF</PackageId>
+    <PackageIcon>CTF.png</PackageIcon>
+    <Copyright />
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Jandini/Janda.CTF</RepositoryUrl>
+    <PackageTags>ctf capture flag challenge runner</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\bin</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\bin</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="Challenge.ch" />
+    <None Remove="CTF.appsettings.json" />    
+    <None Include="CTF.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CTF.appsettings.json">
+      <PackagePath>build</PackagePath>
+      <IncludeInPackage>true</IncludeInPackage>
+    </EmbeddedResource>
+    <Content Include="appsettings.json;Janda.CTF.targets;Properties/launchSettings.json">
+      <IncludeInPackage>true</IncludeInPackage>
+      <PackagePath>build</PackagePath>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Challenge.ch" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.5" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="RightTurn.Extensions.CommandLine" Version="0.2.0" />
+    <PackageReference Include="RightTurn.Extensions.Configuration" Version="0.2.0" />
+    <PackageReference Include="RightTurn.Extensions.Logging" Version="0.2.0" />
+    <PackageReference Include="RightTurn.Extensions.Serilog" Version="0.2.0" />
+
+    <PackageReference Include="GitVersion.MsBuild" Version="5.6.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
