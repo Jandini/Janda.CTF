@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/Jandini/Janda.CTF/compare/0.1.0...0.2.0) (2021-04-21)
+
+
+### Features
+
+* Add challenge list ([dd97835](https://github.com/Jandini/Janda.CTF/commit/dd97835fe906dc11bc4ce4b91a9bf5cad70ddccb))
+
 ## 0.1.0 (2021-04-21)
 
 

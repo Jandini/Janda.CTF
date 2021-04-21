@@ -18,7 +18,14 @@ namespace Janda.CTF
             _services = services;
         }
 
-        public string[] GetChallenges()
+
+        public IChallengeDetails GetChallengeDetails(string className)
+        {
+            var type = _challenges[className];
+            return type.GetCustomAttribute<ChallengeAttribute>();
+        }
+
+        public string[] GetChallengeClasses()
         {
             return _challenges.Keys.ToArray();
         }
@@ -31,8 +38,8 @@ namespace Janda.CTF
                 throw new Exception($"Challenge class \"{className}\" was not found.");
 
             var type = _challenges[className];
-            var challenge = (IChallenge)_services.GetService(type);
             var name = type.GetCustomAttribute<ChallengeAttribute>()?.Name ?? className;
+            var challenge = (IChallenge)_services.GetService(type);
 
             _logger.LogTrace("Running challange {name}", name);
 

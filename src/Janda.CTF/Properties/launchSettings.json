@@ -8,6 +8,10 @@
       "commandName": "Project",
       "commandLineArgs": "play"
     },
+    "List...": {
+      "commandName": "Project",
+      "commandLineArgs": "list"
+    },
     "Help...": {
       "commandName": "Project",
       "commandLineArgs": "--help"

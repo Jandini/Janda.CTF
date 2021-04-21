@@ -3,6 +3,7 @@
     interface IChallengeFactory
     {
         void Run(string className);
-        string[] GetChallenges();
+        string[] GetChallengeClasses();
+        IChallengeDetails GetChallengeDetails(string className);
     }
 }

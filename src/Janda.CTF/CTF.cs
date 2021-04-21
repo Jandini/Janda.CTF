@@ -112,6 +112,10 @@ namespace Janda.CTF
                         provider.GetRequiredService<IChallengeRunnerService>().Run(options);
                         break;
 
+                    case IChallengeListOptions options:
+                        provider.GetRequiredService<IChallengeRunnerService>().List(options);
+                        break;
+
                     case IChallengeTemplateOptions options:
                         provider.GetRequiredService<IChallengeTemplateService>().AddChallenges(options);
                         break;
