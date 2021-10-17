@@ -2,10 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace {{namespace}}
 {  
-    [Challenge(Name = "{{name}}",
-        Brief = @"
-            ...
-        ")]
+    [Challenge(Name = "{{name}}", Brief = @"")]
     public class {{class}} : IChallenge
     {
         private readonly ILogger<{{class}}> _logger;
