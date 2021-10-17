@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 
 namespace Janda.CTF
@@ -8,11 +9,15 @@ namespace Janda.CTF
     {    
         private readonly ILogger<ChallengeProjectService> _logger;
         private string _projectPath;
+        private string _projectName;        
 
         public ChallengeProjectService(ILogger<ChallengeProjectService> logger)
         {
             _logger = logger;
-            
+
+            var assembly = Assembly.GetEntryAssembly();           
+            var ctf = assembly.EntryPoint.GetCustomAttribute<CTFAttribute>() ?? new CTFAttribute();            
+            _projectName = ctf?.ProjectName ?? assembly.GetName().Name;
         }
 
         public string FindDirectory(string directoryName)
@@ -56,7 +61,7 @@ namespace Janda.CTF
             const int PARENT_MAX_DEPTH = 4;
             
             var path = CURRENT_DIR;
-            var pattern = "*.csproj";
+            var pattern = $"{_projectName}.csproj";
             var files = new string[0];
 
             _logger.LogTrace("Searching for {file} project file...", pattern);
