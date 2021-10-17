@@ -24,7 +24,6 @@ namespace Janda.CTF
             }
         }
 
-
         public static void PushTitle()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -35,7 +34,7 @@ namespace Janda.CTF
         public static void PopTitle()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Title = Console.Title;
+                Console.Title = Title;
         }
 
         public static void SetTitle(string title)
