@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/Jandini/Janda.CTF/compare/0.3.0...0.4.0) (2021-10-18)
+
+
+### Bug Fixes
+
+* Pop console title ([abd5794](https://github.com/Jandini/Janda.CTF/commit/abd5794a08c55e6cc003dc779330a05bb2ab56f9))
+
 ## [0.3.0](https://github.com/Jandini/Janda.CTF/compare/0.2.0...0.3.0) (2021-10-17)
 
 ## [0.2.0](https://github.com/Jandini/Janda.CTF/compare/0.1.0...0.2.0) (2021-04-21)
